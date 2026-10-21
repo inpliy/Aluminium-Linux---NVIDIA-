@@ -1,0 +1,25 @@
+name: Generate uBlue Cosign Keys
+on:
+  workflow_dispatch: 
+
+jobs:
+  generate-keys:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.5.0
+
+      - name: Generate Keys
+        run: |
+          cosign generate-key-pair
+          echo "=== PUBLIC KEY BELOW ==="
+          cat cosign.pub
+          echo "========================"
+          echo "=== PRIVATE KEY BELOW ==="
+          cat cosign.key
+          echo "========================"
