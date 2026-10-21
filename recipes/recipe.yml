@@ -1,12 +1,12 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 # image will be published to ghcr.io/<user>/<name>
-name: template
+name: Aluminium OS (latest)
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: Lightwayight atomic linux distro
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
+base-image: ghcr.io/ublue-os/silverblue-nvidia
 image-version: latest # You can pin to a specific version of Fedora as well
 
 # module configuration, executed in order
@@ -17,7 +17,7 @@ modules:
       - source: system
         destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
 
-  - type: dnf
+  - type: rpm-ostree
     repos:
       copr:
         - atim/starship
@@ -25,12 +25,46 @@ modules:
       packages:
         - micro
         - starship
+        - @xfce-desktop-environment
+        - xfce4-goodies
+        - lightdm
+        - lightdm-gtk-greeter
+        
     remove:
       packages:
         # example: removing firefox (in favor of the flatpak)
         # "firefox" is the main package, "firefox-langpacks" is a dependency
         - firefox
         - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
+        - libreoffice-core
+        - libreoffice-calc
+        - libreoffice-impress
+        - libreoffice-writer
+        - gnome-shell
+        - gnome-initial-setup
+        - nautilus            
+        - yelp                
+        - gnome-tour          
+        - gnome-user-docs     
+        - gnome-calculator    
+        - gnome-calendar      
+        - gnome-clocks        
+        - gnome-maps          
+        - gnome-weather       
+        - gnome-contacts      
+        - gnome-characters    
+        - gnome-font-viewer   
+        - gnome-logs          
+        - gnome-system-monitor 
+        - gnome-text-editor   
+        - loupe              
+        - snapshot            
+        - evince              
+        - baobab              
+        - totem              
+        - simple-scan         
+        - cheese                     
+  
 
   - type: default-flatpaks
     configurations:
@@ -40,6 +74,8 @@ modules:
         install: # system flatpaks we want all users to have and not remove
           - org.mozilla.firefox
           - org.gnome.Loupe
+          - org.onlyoffice.desktopeditors
+          - dev.vencord.Vesktop
       - scope: user # Also add Flathub user repo, but no user packages
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
