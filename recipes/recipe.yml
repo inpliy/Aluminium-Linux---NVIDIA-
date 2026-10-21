@@ -29,6 +29,11 @@ modules:
         - xfce4-goodies
         - lightdm
         - lightdm-gtk-greeter
+        - python3
+        -python3-pip
+        -fuse-libs
+        -xarchive
+        -thunar-archive-plugin
         
     remove:
       packages:
@@ -63,7 +68,9 @@ modules:
         - baobab              
         - totem              
         - simple-scan         
-        - cheese                     
+        - cheese
+        - gdm
+        
   
 
   - type: default-flatpaks
@@ -73,9 +80,13 @@ modules:
         # If no repo information is specified, Flathub will be used by default
         install: # system flatpaks we want all users to have and not remove
           - org.mozilla.firefox
-          - org.gnome.Loupe
           - org.onlyoffice.desktopeditors
           - dev.vencord.Vesktop
+          - it.mijorus.gearlever
       - scope: user # Also add Flathub user repo, but no user packages
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
+
+  - type: script
+    snippets:
+      - "systemctl enable lightdm.service"
